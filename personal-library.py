@@ -18,7 +18,7 @@ def show_menu():
     print("  5. Exit")
 
 
-def add_book(library, titles):
+def add_book(library):
     """
     Add a new book, its author and publication year to the library
     """
@@ -28,9 +28,8 @@ def add_book(library, titles):
     else:
         author = input("Enter the book's author: ").strip().title()
         year = input("Enter the publication year: ").strip()
-        book = (title, author, year)
-        library.append(book)
-        titles.add(title)
+
+        library[title] = {"author": author, "year": year}
         print(f"\"{title}\" added successfully")
 
 
@@ -41,8 +40,10 @@ def view_books(library):
     if not library:
         print("There are no available books")
         return
-    for title, author, year in sorted(library, key=lambda b: b[0]):
-        print(f"{title} by {author}, public in {year}")
+    
+    for title in sorted(library.keys()):
+        info = library[title]
+        print(f"{title} by {info["author"]}, public in {info["year"]}")
    
 
 def search_book(library):
@@ -50,24 +51,22 @@ def search_book(library):
     Searching for the books you want
     """
     title = input("Enter the book's title to search: ").strip().title()
-    for book in library:
-        if book[0] == title:
-            print(f"Found {book[0]} - {book[1]} - {book[2]}")
-            return
+    for title in library:
+        info = library[title]
+        print(f"Found \"{title}\" by {info["author"]} - {info["year"]}")
+        return
     print(f"\"{title}\" not found")
 
 
-def delete_book(library, titles):
+def delete_book(library):
     """
     Delete a book from the library
     """
     title = input("Enter the book's title to remove: ").strip().title()
-    for book in library:
-        if book[0] == title:
-            library.remove(book)
-            titles.remove(title)
-            print(f"\"{title}\" removed successfully.")
-            return
+    for title in library:
+        del library[title]
+        print(f"\"{title}\" removed successfully.")
+        return
     print(f"\"{title}\" not found!")
 
 
@@ -75,21 +74,20 @@ def main():
     """
     Main program that loops menu options
     """
-    library = [] # library is initialized to be empty
-    titles = set()
+    library = {} # library is initialized to be empty
     
     while True:
         show_menu()
         choice = input("Choose an option: ").strip()
 
         if choice == "1":
-            add_book(library, titles)
+            add_book(library)
         elif choice == "2":
             view_books(library)
         elif choice == "3":
             search_book(library)
         elif choice == "4":
-            delete_book(library, titles)
+            delete_book(library)
         elif choice == "5":
             print("Goodbye")
             break
