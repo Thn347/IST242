@@ -2,7 +2,7 @@
 Simple Personal Library Management System
 Author: Thuan Nguyen
 Date: 1/31
-Version: 1.7
+Version: 1.8
 """
 
 
@@ -62,14 +62,22 @@ def view_books(library):
 
 def search_book(library):
     """
-    Searching for the books you want
+    Searching for the books you want with partial and case-insensitive ability
     """
-    title = input("Enter the book's title to search: ").strip().title()
-    if title in library:
-        info = library[title]
-        print(f"Found \"{title}\" by {info['author']} - public in {info['year']}")
-    else:
-        print(f"\"{title}\" not found")
+    search = input("Enter the book's title to search: ").strip().lower()
+
+    match = []
+    for title, info in library.items():
+        if search in title.lower():
+            match.append((title, info))
+
+    if not match:
+        print("No matching books were found.")
+        return
+
+    print("\nSearch results: ")
+    for i, (title, info) in enumerate(match, start=1):
+        print(f"{i}. \"{title}\" by {info['author']} - public in {info['year']}")
 
 
 def delete_book(library):
