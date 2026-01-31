@@ -2,7 +2,7 @@
 Simple Personal Library Management System
 Author: Thuan Nguyen
 Date: 1/31
-Version: 1.8
+Version: 2.0
 """
 
 
@@ -16,7 +16,8 @@ def show_menu():
     print("  3.Search Book")
     print("  4.Delete Book")
     print("  5.Update Book")
-    print("  6.Exit")
+    print("  6.Statistic")
+    print("  7.Exit")
 
 
 def add_book(library):
@@ -57,7 +58,7 @@ def view_books(library):
     print("\nYour Books:") 
     for i, title in enumerate(sorted(library.keys()), start=1):
         info = library[title]
-        print(f"{i}. {title} - {info['author']}, public in {info['year']}")
+        print(f"   {i}. {title} - {info['author']}, public in {info['year']}")
    
 
 def search_book(library):
@@ -77,7 +78,7 @@ def search_book(library):
 
     print("\nSearch results: ")
     for i, (title, info) in enumerate(match, start=1):
-        print(f"{i}. \"{title}\" by {info['author']} - public in {info['year']}")
+        print(f"   {i}. \"{title}\" by {info['author']} - public in {info['year']}")
 
 
 def delete_book(library):
@@ -158,6 +159,21 @@ def update_book(library):
             
             else:
                 print("Invalid choice - try again")
+
+
+def statistic(library):
+    if not library:
+        print("There are no available books")
+        return
+    
+    authors = {}
+    for info in library.values():
+        author = info['author']
+        authors[author] = authors.get(author, 0) + 1
+
+    print("\nYour authors:")
+    for author, count in sorted(authors.items()):
+        print(f"   {author} - {count} book{'s' if count > 1 else ''}")
             
 
 def main():
@@ -181,6 +197,8 @@ def main():
         elif choice == "5":
             update_book(library)
         elif choice == "6":
+            statistic(library)
+        elif choice == "7":
             print("Goodbye!")
             break
         else:
