@@ -1,8 +1,8 @@
 """
 Simple Personal Library Management System
 Author: Thuan Nguyen
-Date: 1/30
-Version: 1.5
+Date: 1/31
+Version: 1.7
 """
 
 
@@ -24,6 +24,11 @@ def add_book(library):
     Add a new book, its author and publication year to the library
     """
     title = input("Enter book title: ").strip().title()
+    if title in library:
+        confirm = input("This title already exists. Do you want to update it (Y/N)? ").strip().upper()
+        if confirm == "N":
+            print("No changes were made. The existing book was kept!")
+            return
     
     author = input("Enter the book's author: ").strip().title()
     while True:
@@ -36,7 +41,7 @@ def add_book(library):
                 print("Please put year that is >= 1000!")
         else:
             print("Invalid input. Number only")
-
+    
     library[title] = {"author": author, "year": year_public}
     print(f"\"{title}\" added successfully")
 
