@@ -4,6 +4,8 @@ Author: Thuan Nguyen
 Date: 1/31
 Version: 2.0
 """
+import json
+import os
 
 
 def show_menu():
@@ -17,7 +19,7 @@ def show_menu():
     print("  4.Delete Book")
     print("  5.Update Book")
     print("  6.Statistic")
-    print("  7.Exit")
+    print("  7.Save and exit")
 
 
 def add_book(library):
@@ -176,11 +178,37 @@ def statistic(library):
         print(f"   {author} - {count} book{'s' if count > 1 else ''}")
             
 
+def save_library(library, filename="personal-library.json"):
+    """
+    Save the library dictionary to a JSON file
+    """
+    try:
+        with open(filename, "w") as file:
+            json.dump(library, file, indent=4)
+        print("Library saved successfully!")
+    except Exception as e:
+        print(f"Error saving library: {e}")
+
+
+def uploading_library(filename="personal-library.json"):
+    """
+    Uploading existing library
+    """
+    if not os.path.exists(filename):
+        return {}
+    
+    try:
+        with open(filename, "r") as file:
+            return json.load(file)
+    except Exception as e:
+        print(f"Error loading the library: {e}")
+        return {}
+
 def main():
     """
     Main program that loops menu options
     """
-    library = {} # library is initialized to be empty
+    library = uploading_library() # library is initialized to be empty
     
     while True:
         show_menu()
@@ -199,6 +227,7 @@ def main():
         elif choice == "6":
             statistic(library)
         elif choice == "7":
+            save_library(library)
             print("Goodbye!")
             break
         else:
