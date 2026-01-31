@@ -1,8 +1,8 @@
 """
 Simple Personal Library Management System
 Author: Thuan Nguyen
-Date: 1/28
-Version: 1.0
+Date: 1/30
+Version: 1.5
 """
 
 
@@ -27,9 +27,19 @@ def add_book(library):
         print(f"\"{title}\" already existed")
     else:
         author = input("Enter the book's author: ").strip().title()
-        year = input("Enter the publication year: ").strip()
+        
+        while True:
+            year = input("Enter the publication year: ").strip()
+            if year.isdigit():
+                year_public = int(year)
+                if year_public >= 1000:
+                    break
+                else:
+                    print("Please put year that is >= 1000!")
+            else:
+                print("Invalid input. Number only")
 
-        library[title] = {"author": author, "year": year}
+        library[title] = {"author": author, "year": year_public}
         print(f"\"{title}\" added successfully")
 
 
@@ -43,7 +53,7 @@ def view_books(library):
     
     for title in sorted(library.keys()):
         info = library[title]
-        print(f"{title} by {info["author"]}, public in {info["year"]}")
+        print(f"{title} by {info['author']}, public in {info['year']}")
    
 
 def search_book(library):
@@ -51,11 +61,11 @@ def search_book(library):
     Searching for the books you want
     """
     title = input("Enter the book's title to search: ").strip().title()
-    for title in library:
+    if title in library:
         info = library[title]
         print(f"Found \"{title}\" by {info["author"]} - {info["year"]}")
-        return
-    print(f"\"{title}\" not found")
+    else:
+        print(f"\"{title}\" not found")
 
 
 def delete_book(library):
@@ -63,11 +73,12 @@ def delete_book(library):
     Delete a book from the library
     """
     title = input("Enter the book's title to remove: ").strip().title()
-    for title in library:
+
+    if title in library:
         del library[title]
         print(f"\"{title}\" removed successfully.")
-        return
-    print(f"\"{title}\" not found!")
+    else:
+        print(f"\"{title}\" not found!")
 
 
 def main():
