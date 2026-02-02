@@ -1,8 +1,8 @@
 """
 Simple Personal Library Management System
-Author: Thuan Nguyen
-Date: 1/31
-Version: 2.1
+Author: Thuan Nguyen, Alex Ortiz
+Date: 2/2
+Version: 2.2
 """
 import json
 import os
